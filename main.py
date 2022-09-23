@@ -17,8 +17,8 @@ pygame.display.set_icon(icon)
 PlayerImg = pygame.image.load("rocket.png")
 PlayerImg_X_size = 32
 PlayerImg_Y_size = 32
-playerX = 50
-playerY = 234
+playerX = screen_width / 10
+playerY = ( screen_height // 2 ) - ( PlayerImg_Y_size // 2 )
 playerX_change = 0
 playerY_change = 0
 
