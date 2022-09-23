@@ -15,6 +15,9 @@ pygame.display.set_caption("Werkplaats 1: PyGame Nohtyp")
 #set application window size
 canvas = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
+logo = pygame.image.load("images/RuimteschipLogo.png").convert_alpha()
+logo_rect = logo.get_rect()
+
 #function to check if user has requested to quit game
 def quit_game_requested():
     halting = False
