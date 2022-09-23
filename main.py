@@ -8,6 +8,9 @@ pygame.init()
 SCREEN_WIDTH = 1280
 SCREEN_HEIGHT = 720
 BACKGROUND_COLOR = (0, 0, 0)
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
+GREEN = (0, 255, 0)
 
 #application window name
 pygame.display.set_caption("Werkplaats 1: PyGame Nohtyp")
@@ -36,3 +39,20 @@ while not quit_game_requested():
     canvas.blit(logo, logo_rect)
 
     pygame.display.flip()
+
+
+
+#On Game Over
+
+pygame.display.set_caption ("Game Over")
+
+#Loop until the user clicks on the close button
+done = False 
+
+# Used to set how fast the screen refreshes
+clock = pygame.time.Clock()
+
+
+ 
+
+ 
