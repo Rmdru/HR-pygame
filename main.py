@@ -17,8 +17,8 @@ pygame.display.set_icon(icon)
 PlayerImg = pygame.image.load("rocket.png")
 PlayerImg_X_size = 32
 PlayerImg_Y_size = 32
-playerX = 484
-playerY = 400
+playerX = 50
+playerY = 234
 playerX_change = 0
 playerY_change = 0
 
@@ -60,7 +60,7 @@ while running:
             if event.key == pygame.K_s:
                 playerY_change = +0.2
                 print("Key s is pressed")
-        #   If keystroke is released, change speed to 0
+        # If keystroke is released, change speed to 0
         if event.type == pygame.KEYUP:
             print("Keystroke has been released")
             if event.key == pygame.K_a:
@@ -73,6 +73,7 @@ while running:
                 playerY_change = 0
 
     playerX += playerX_change
+    playerY += playerY_change
 
     # Stop player if they hit the screen border
     if playerX <= 0:
@@ -84,7 +85,10 @@ while running:
     if playerY >= screen_height - PlayerImg_Y_size:
         playerY = screen_height - PlayerImg_Y_size
 
-    playerY += playerY_change
+    # Prevent player from going too far right
+    if playerX >= screen_width * 0.60:
+        playerX = screen_width * 0.60
+
     player(playerX, playerY)
 
     pygame.display.update()
