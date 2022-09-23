@@ -13,6 +13,7 @@ BACKGROUND_COLOR = (0, 0, 0)
 TARGET_AMOUNT = 5
 TARGET_SPEED = 10
 TARGET_SPAWN_INTERVAL = 1000
+TARGET_SIZE = 50
 
 #application window name
 pygame.display.set_caption("Werkplaats 1: PyGame Nohtyp")
@@ -33,7 +34,7 @@ def quit_game_requested():
 for i in range(TARGET_AMOUNT):
     color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
     spawn_area_width = SCREEN_WIDTH / 2
-    pygame.draw.rect(canvas, color, pygame.Rect(random.randint(spawn_area_width, SCREEN_WIDTH - 50), random.randint(0, SCREEN_HEIGHT - 50), 50, 50))
+    pygame.draw.rect(canvas, color, pygame.Rect(random.randint(spawn_area_width, SCREEN_WIDTH - TARGET_SIZE), random.randint(0, SCREEN_HEIGHT - TARGET_SIZE), TARGET_SIZE, TARGET_SIZE))
     pygame.display.flip()
 
 #loop that runs every frame
