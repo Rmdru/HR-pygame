@@ -42,4 +42,4 @@ while not quit_game_requested():
     canvas.fill(BACKGROUND_COLOR)
 
     #update the display
-    pygame.display.flip()
+    # pygame.display.flip()
