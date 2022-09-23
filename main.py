@@ -33,7 +33,7 @@ def quit_game_requested():
 for i in range(TARGET_AMOUNT):
     color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
     spawn_area_width = SCREEN_WIDTH / 2
-    pygame.draw.rect(canvas, color, pygame.Rect(random.randint(spawn_area_width, SCREEN_WIDTH), random.randint(0, SCREEN_HEIGHT), 50, 50))
+    pygame.draw.rect(canvas, color, pygame.Rect(random.randint(spawn_area_width, SCREEN_WIDTH - 50), random.randint(0, SCREEN_HEIGHT - 50), 50, 50))
     pygame.display.flip()
 
 #loop that runs every frame
