@@ -25,3 +25,9 @@ clock = pygame.time.Clock()
 logo = pygame.image.load("RuimteschipLogo.png")
 pygame.display.set_icon(logo)
 
+# Functies definiëren en uitvoeren
+
+def tekst_instellingen(tekst, lettertype):
+    tekst_weergave = lettertype.render(tekst, True, zwart)
+    return tekst_weergave, tekst_weergave.get_rect()
+
