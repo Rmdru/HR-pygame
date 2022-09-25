@@ -31,3 +31,7 @@ def tekst_instellingen(tekst, lettertype):
     tekst_weergave = lettertype.render(tekst, True, zwart)
     return tekst_weergave, tekst_weergave.get_rect()
 
+def startknop(mededeling,x,y,breedte,hoogte,inactivecolor,activecolor,action=None):
+    muis = pygame.mouse.get_pos()
+    muisklik = pygame.mouse.get_pressed()
+
