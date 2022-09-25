@@ -64,3 +64,4 @@ def startscherm_game():
         pygame.display.update()
         clock.tick(15)
 
+startscherm_game()
