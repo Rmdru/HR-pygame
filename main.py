@@ -35,3 +35,32 @@ def startknop(mededeling,x,y,breedte,hoogte,inactivecolor,activecolor,action=Non
     muis = pygame.mouse.get_pos()
     muisklik = pygame.mouse.get_pressed()
 
+    if x + breedte > muis[0] > x and y + hoogte > muis[1] > y:
+        pygame.draw.rect(startscherm, activecolor, (x, y, breedte, hoogte))
+    else:
+        pygame.draw.rect(startscherm, inactivecolor, (x, y, breedte, hoogte))
+
+    tekst_in_kleine_letters = pygame.font.Font("freesansbold.ttf", 40)
+    tekst_uiterlijk, textRect = tekst_instellingen(mededeling, tekst_in_kleine_letters)
+    textRect.center = ((x + (breedte / 2)), (y + (hoogte / 2)))
+    startscherm.blit(tekst_uiterlijk, textRect)
+
+def startscherm_game():
+    start = True
+    while start:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+
+        startscherm.fill(wit)
+        tekst_in_hoofdletters = pygame.font.Font('freesansbold.ttf', 95)
+        tekst_uiterlijk, TextRect = tekst_instellingen("Space Shooter", tekst_in_hoofdletters)
+        TextRect.center = ((scherm_breedte / 2), (scherm_hoogte / 2))
+        startscherm.blit(tekst_uiterlijk, TextRect)
+
+        startknop("Play!!!", 290, 380, 200, 100, donker_groen, licht_groen)
+
+        pygame.display.update()
+        clock.tick(15)
+
