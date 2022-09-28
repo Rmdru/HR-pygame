@@ -80,8 +80,11 @@ while running:
             
             ## Shooting
             if event.key == pygame.K_SPACE and bullet_state == "ready":
+                # To make sure the bullet starts at the front of the player
                 bulletX = playerX + 32
-                fire_bullet(playerX, playerY)
+                # Set bullet Y coordinate to current player Y coordinate
+                bulletY = playerY
+                fire_bullet(playerX, bulletY)
                 print("Key space is pressed")
 
         # If keystroke is released, change speed to 0
@@ -115,7 +118,7 @@ while running:
 
     # Bullet movement
     if bullet_state == "fire":
-        fire_bullet(bulletX, playerY)
+        fire_bullet(bulletX, bulletY)
         bulletX += bulletX_change
 
     # Reset bullet if it hits the border
