@@ -32,7 +32,7 @@ running = True
 while running:
 
     # RGB - Red/Green/Blue
-    screen.fill((255, 0, 0))
+    screen.fill((55, 55, 55))
 
     # Check events
     for event in pygame.event.get():
@@ -46,19 +46,19 @@ while running:
             print("A keystroke is pressed")
             # If a key, X decreases
             if event.key == pygame.K_a:
-                playerX_change = -0.2
+                playerX_change = -0.4
                 print("Key a is pressed")
             # If d key, X increases
             if event.key == pygame.K_d:
-                playerX_change = +0.2
+                playerX_change = +0.4
                 print("Key d is pressed")
             # If w key, Y decreases
             if event.key == pygame.K_w:
-                playerY_change = -0.2
+                playerY_change = -0.4
                 print("Key w is pressed")
             # If s key, Y increases
             if event.key == pygame.K_s:
-                playerY_change = +0.2
+                playerY_change = +0.4
                 print("Key s is pressed")
         # If keystroke is released, change speed to 0
         if event.type == pygame.KEYUP:
