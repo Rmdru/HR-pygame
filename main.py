@@ -28,9 +28,9 @@ playerY_change = 0
 BulletImg = pygame.image.load("bullet.png")
 BulletImg_X_size = 32
 BulletImg_Y_size = 32
-bulletX = playerX + (PlayerImg_X_size - 15)
+bulletX = playerX
 bulletY = playerY + (BulletImg_Y_size // 2)
-bulletX_change = 2
+bulletX_change = 0
 bulletY_change = 0
 bullet_state = "ready"
 
@@ -43,7 +43,7 @@ def bullet(x, y):
 def fire_bullet(x, y):
     global bullet_state
     bullet_state = "fire"
-    screen.blit(BulletImg, (bulletX, bulletY))
+    screen.blit(BulletImg, (x + (BulletImg_X_size // 2 ), y + (BulletImg_Y_size // 2)))
 
 # Game Loop
 running = True
@@ -77,9 +77,11 @@ while running:
             if event.key == pygame.K_s:
                 playerY_change = +0.4
                 print("Key s is pressed")
+            
             ## Shooting
             if event.key == pygame.K_SPACE:
-                fire_bullet(playerY, playerX)
+                bulletX = playerX
+                fire_bullet(playerX, playerY)
                 print("Key space is pressed")
 
         # If keystroke is released, change speed to 0
@@ -111,9 +113,15 @@ while running:
     if playerX >= screen_width * 0.60:
         playerX = screen_width * 0.60
 
+    # Bullet movement
     if bullet_state == "fire":
-        fire_bullet(playerY,(playerX - 15))
+        fire_bullet((bulletX + playerX), playerY)
         bulletX += bulletX_change
+
+    # Reset bullet if it hits the border
+    if bulletX >= screen_width:
+        bulletX = playerX
+        bullet_state = "ready"
 
     player(playerX, playerY)
 
