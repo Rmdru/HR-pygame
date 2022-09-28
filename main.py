@@ -79,7 +79,7 @@ while running:
                 print("Key s is pressed")
             
             ## Shooting
-            if event.key == pygame.K_SPACE:
+            if event.key == pygame.K_SPACE and bullet_state == "ready":
                 bulletX = playerX + 32
                 fire_bullet(playerX, playerY)
                 print("Key space is pressed")
