@@ -55,6 +55,7 @@ def message_to_screen(message, color, font_size, x, y):
         score += 150 - self.radius
 
 # FIXME: Maak keuze qua taal (.EN), statische variabelen in HEADERS. Maak een keuze qua breedte. DdV
+# FIXME: Ik maak alleen maar problemen
 
 scherm_breedte = 800
 scherm_hoogte = 600
