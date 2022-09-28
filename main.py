@@ -30,7 +30,7 @@ BulletImg_X_size = 32
 BulletImg_Y_size = 32
 bulletX = playerX
 bulletY = playerY + (BulletImg_Y_size // 2)
-bulletX_change = 0
+bulletX_change = 1
 bulletY_change = 0
 bullet_state = "ready"
 
@@ -80,7 +80,7 @@ while running:
             
             ## Shooting
             if event.key == pygame.K_SPACE:
-                bulletX = playerX
+                bulletX = playerX + 32
                 fire_bullet(playerX, playerY)
                 print("Key space is pressed")
 
@@ -115,7 +115,7 @@ while running:
 
     # Bullet movement
     if bullet_state == "fire":
-        fire_bullet((bulletX + playerX), playerY)
+        fire_bullet(bulletX, playerY)
         bulletX += bulletX_change
 
     # Reset bullet if it hits the border
