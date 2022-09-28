@@ -36,3 +36,20 @@ while not quit_game_requested():
     canvas.blit(logo, logo_rect)
 
     pygame.display.flip()
+
+
+# Hier staat de code voor de score board
+def message_to_screen(message, color, font_size, x, y):
+    '''display messages to screen.'''
+    font = pygame.font.Sysfont(font_name, font_size)
+    text = font.render(message, True, color)
+    text_rect = text.get_rect()
+    text_rect = (x, y)
+    screen.blit(text_rect)
+
+    message_to_screen("score:) " + str(score), WHITE, 24, SCREEN_WIDTH/2, 10)
+
+    bullet_collision = pygame.sprite.groupcollide(all_meteors, all_bullets, True, True)
+    for collision in bullet_collision:
+        spawn_new_meteor()
+        score += 150 - self.radius
