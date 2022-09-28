@@ -15,34 +15,51 @@ pygame.display.set_icon(icon)
 
 # Player
 PlayerImg = pygame.image.load("rocket.png")
-PlayerImg_X_size = 32
-PlayerImg_Y_size = 32
+PlayerImg_X_size = 64
+PlayerImg_Y_size = 64
 playerX = screen_width / 10
 playerY = ( screen_height // 2 ) - ( PlayerImg_Y_size // 2 )
 playerX_change = 0
 playerY_change = 0
 
+# Bullet
+# Ready = Cant't see the bullet
+# Fire = Bullet is moving on screen
+BulletImg = pygame.image.load("bullet.png")
+BulletImg_X_size = 32
+BulletImg_Y_size = 32
+bulletX = playerX + (PlayerImg_X_size - 15)
+bulletY = playerY + (BulletImg_Y_size // 2)
+bulletX_change = 2
+bulletY_change = 0
+bullet_state = "ready"
 
 def player(x, y):
     screen.blit(PlayerImg, (x, y))
 
+def bullet(x, y):
+    screen.blit(BulletImg, (x, y))
+
+def fire_bullet(x, y):
+    global bullet_state
+    bullet_state = "fire"
+    screen.blit(BulletImg, (bulletX, bulletY))
 
 # Game Loop
 running = True
 while running:
 
     # RGB - Red/Green/Blue
-    screen.fill((55, 55, 55))
+    screen.fill((255, 255, 255))
 
     # Check events
     for event in pygame.event.get():
         # Quit
         if event.type == pygame.QUIT:
             running = False
-        # Movement
-        #   If keystroke is Pressed
-        #   Then, check left/right up/down
+        # If keystroke is Pressed
         if event.type == pygame.KEYDOWN:
+            ## Movement
             print("A keystroke is pressed")
             # If a key, X decreases
             if event.key == pygame.K_a:
@@ -60,6 +77,11 @@ while running:
             if event.key == pygame.K_s:
                 playerY_change = +0.4
                 print("Key s is pressed")
+            ## Shooting
+            if event.key == pygame.K_SPACE:
+                fire_bullet(playerY, playerX)
+                print("Key space is pressed")
+
         # If keystroke is released, change speed to 0
         if event.type == pygame.KEYUP:
             print("Keystroke has been released")
@@ -88,6 +110,10 @@ while running:
     # Prevent player from going too far right
     if playerX >= screen_width * 0.60:
         playerX = screen_width * 0.60
+
+    if bullet_state == "fire":
+        fire_bullet(playerY,(playerX - 15))
+        bulletX += bulletX_change
 
     player(playerX, playerY)
 
