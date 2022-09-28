@@ -1,25 +1,25 @@
-#imports
+# imports
 import pygame
 
-#initializing pygame
+# initializing pygame
 pygame.init()
 
-#vars
+# vars
 SCREEN_WIDTH = 1280
 SCREEN_HEIGHT = 720
 BACKGROUND_COLOR = (0, 0, 0)
 
-#application window name
+# application window name
 pygame.display.set_caption("Werkplaats 1: PyGame Nohtyp")
 
-#set application window size
+# set application window size
 canvas = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
-#application window icon
+# application window icon
 logo = pygame.image.load("img/RuimteschipLogo.png").convert_alpha()
 logo_rect = logo.get_rect()
 
-#function to check if user has requested to quit game
+# function to check if user has requested to quit game
 def quit_game_requested():
     halting = False
     for event in pygame.event.get():
@@ -28,9 +28,9 @@ def quit_game_requested():
             break
     return halting
 
-#loop that runs every frame
+# loop that runs every frame
 while not quit_game_requested():
-    #bg color
+    # bg color
     canvas.fill(BACKGROUND_COLOR)
 
     canvas.blit(logo, logo_rect)
@@ -53,6 +53,8 @@ def message_to_screen(message, color, font_size, x, y):
     for collision in bullet_collision:
         spawn_new_meteor()
         score += 150 - self.radius
+
+# FIXME: Maak keuze qua taal (.EN), statische variabelen in HEADERS. Maak een keuze qua breedte. DdV
 
 scherm_breedte = 800
 scherm_hoogte = 600
@@ -79,7 +81,7 @@ def tekst_instellingen(tekst, lettertype):
     tekst_weergave = lettertype.render(tekst, True, zwart)
     return tekst_weergave, tekst_weergave.get_rect()
 
-def startknop(mededeling,x,y,breedte,hoogte,inactivecolor,activecolor,action=None):
+def startknop(mededeling, x ,y ,breedte, hoogte, inactivecolor, activecolor, action=None):
     muis = pygame.mouse.get_pos()
     muisklik = pygame.mouse.get_pressed()
 
