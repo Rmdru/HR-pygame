@@ -22,37 +22,20 @@ canvas = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 logo = pygame.image.load("img/RuimteschipLogo.png").convert_alpha()
 logo_rect = logo.get_rect()
 
-#function to check if user has requested to quit game
-def quit_game_requested():
-    halting = False
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            halting = True
-            break
-    return halting
-
-#loop that runs every frame
-while not quit_game_requested():
-    #bg color
-    canvas.fill(BACKGROUND_COLOR)
-
-    canvas.blit(logo, logo_rect)
-
-    pygame.display.flip()
-
-
-
-#On Game Over
-
 pygame.display.set_caption ("Game Over")
 
 #Loop until the user clicks on the close button
-done = False 
+done = False
 
 # Used to set how fast the screen refreshes
 clock = pygame.time.Clock()
 
 
- 
+game_over = False
+if self._is_collision():
+    game_over = True
+    return game_over, self.score
 
- 
+
+
+
