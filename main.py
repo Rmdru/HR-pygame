@@ -21,6 +21,7 @@ playerX = screen_width / 10
 playerY = ( screen_height // 2 ) - ( PlayerImg_Y_size // 2 )
 playerX_change = 0
 playerY_change = 0
+player_speed = 0.75
 
 # Bullet
 # Ready = Cant't see the bullet
@@ -30,7 +31,7 @@ BulletImg_X_size = 32
 BulletImg_Y_size = 32
 bulletX = playerX
 bulletY = playerY + (BulletImg_Y_size // 2)
-bulletX_change = 1
+bulletX_change = 1.5
 bulletY_change = 0
 bullet_state = "ready"
 
@@ -60,23 +61,23 @@ while running:
         # If keystroke is Pressed
         if event.type == pygame.KEYDOWN:
             ## Movement
-            print("A keystroke is pressed")
+            print("Key down:")
             # If a key, X decreases
             if event.key == pygame.K_a:
-                playerX_change = -0.4
-                print("Key a is pressed")
+                playerX_change = -player_speed
+                print("a")
             # If d key, X increases
             if event.key == pygame.K_d:
-                playerX_change = +0.4
-                print("Key d is pressed")
+                playerX_change = +player_speed
+                print("d")
             # If w key, Y decreases
             if event.key == pygame.K_w:
-                playerY_change = -0.4
-                print("Key w is pressed")
+                playerY_change = -player_speed
+                print("w")
             # If s key, Y increases
             if event.key == pygame.K_s:
-                playerY_change = +0.4
-                print("Key s is pressed")
+                playerY_change = +player_speed
+                print("s")
             
             ## Shooting
             if event.key == pygame.K_SPACE and bullet_state == "ready":
@@ -85,11 +86,11 @@ while running:
                 # Set bullet Y coordinate to current player Y coordinate
                 bulletY = playerY
                 fire_bullet(playerX, bulletY)
-                print("Key space is pressed")
+                print("space")
 
         # If keystroke is released, change speed to 0
         if event.type == pygame.KEYUP:
-            print("Keystroke has been released")
+            print("Key up")
             if event.key == pygame.K_a:
                 playerX_change = 0
             if event.key == pygame.K_d:
