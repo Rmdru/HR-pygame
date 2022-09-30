@@ -1,5 +1,7 @@
-# imports
+# Import libraries
+import random
 import pygame
+from pygame.locals import *
 
 # initializing pygame
 pygame.init()
