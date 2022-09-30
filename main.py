@@ -43,12 +43,46 @@ def text_settings(text, lettertype_font):
     text_display = lettertype_font.render(text, True, BLACK)
     return text_display, text_display.get_rect()
 
+def game_loop():
+    # create background
+    background = pygame.Surface(canvas.get_size())
+    background = background.convert()
+
+    # The number/amount of stars on the (background) screen
+    STARS_AMOUNT = 200
+
+    # create N stars randomly on the background
+    stars = [[random.randint(0, SCREEN_WIDTH), random.randint(0, SCREEN_HEIGHT)]
+            for x in range(STARS_AMOUNT)]
+
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+
+        background.fill((0, 0, 0))
+        for star in stars:
+            pygame.draw.line(background,
+                             (255, 255, 255), (star[0], star[1]), (star[0], star[1]))
+            star[0] = star[0] - 1
+            if star[0] < 0:
+                star[0] = SCREEN_WIDTH
+                star[1] = random.randint(0, SCREEN_HEIGHT)
+        canvas.blit(background, (0, 0))
+
+        pygame.display.update()
+        clock.tick(GAME_SPEED)
+
 def startbutton(message, x, y, width, height, inactivecolour, activecolour, action=None):
     mouse = pygame.mouse.get_pos()
     mouse_click = pygame.mouse.get_pressed()
 
     if x + width > mouse[0] > x and y + height > mouse[1] > y:
         pygame.draw.rect(canvas, activecolour, (x, y, width, height))
+        if mouse_click[0] == 1 and action != None:
+            if action == "play":
+                game_loop()
     else:
         pygame.draw.rect(canvas, inactivecolour, (x, y, width, height))
 
@@ -64,7 +98,7 @@ while not quit_game_requested():
     TextRect.center = ((SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2))
     canvas.blit(text_appearance_outsidelook, TextRect)
 
-    startbutton("Play!!!", 290, 380, 200, 100, DARK_GREEN, LIGHT_GREEN)
+    startbutton("Play!!!", 290, 380, 200, 100, DARK_GREEN, LIGHT_GREEN, "play")
 
     pygame.display.update()
     clock.tick(GAME_SPEED)
