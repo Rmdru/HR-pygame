@@ -1,31 +1,28 @@
-#import pygame
+# imports
 import pygame
-#import random
-import random
 
-#initializing pygame
+# initializing pygame
 pygame.init()
 
-#vars
-GAME_SPEED = 60
-SCREEN_WIDTH = 1280
-SCREEN_HEIGHT = 720
+# vars
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 600
 BACKGROUND_COLOR = (0, 0, 0)
-TARGET_AMOUNT = 5
-TARGET_SPEED = [-5, 0]
-TARGET_SIZE = 50
-TARGET_SPAWN_AREA_WIDTH = 0.5
 
-#application window name
+# application window name
 pygame.display.set_caption("Werkplaats 1: PyGame Nohtyp")
+
+# set application window size
+canvas = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+
+# set application window icon
+logo = pygame.image.load("RuimteschipLogo.png")
+pygame.display.set_icon(logo)
 
 #start pygame clock
 clock = pygame.time.Clock()
 
-#set application window size
-canvas = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-
-#function to check if user has requested to quit game
+# function to check if user has requested to quit game
 def quit_game_requested():
     halting = False
     for event in pygame.event.get():
@@ -34,28 +31,52 @@ def quit_game_requested():
             break
     return halting
 
-#generate target surfaces
-targets_surface = []
-targets_color = []
-for i in range(TARGET_AMOUNT):
-    target_color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
-    spawn_area_width = SCREEN_WIDTH * TARGET_SPAWN_AREA_WIDTH
-    target_surface = pygame.Rect(pygame.Rect(random.randint(spawn_area_width, SCREEN_WIDTH - TARGET_SIZE), random.randint(0, SCREEN_HEIGHT - TARGET_SIZE), TARGET_SIZE, TARGET_SIZE))
-    targets_surface.append(target_surface)
-    targets_color.append(target_color)
-
-#loop that runs every frame
+# loop that runs every frame
 while not quit_game_requested():
-    #bg color
-    canvas.fill(BACKGROUND_COLOR)
+    # Kleuren voor de schermachtergrond (wit) en de teksten (zwart)
+    zwart = (0, 0, 0)
+    wit = (255, 255, 255)
 
-    #loop through target surfaces to draw them on the canvas
-    for index, item in enumerate(targets_surface):
-        item.move_ip(TARGET_SPEED)
-        pygame.draw.rect(canvas, targets_color[index], item)
+    # Kleuren van de startknop wanneer je wel/niet met de muis erover gaat
+    donker_groen = (0, 200, 0)
+    licht_groen = (0, 255, 0)
 
-    #update the display
-    pygame.display.flip()
+    # Functies definiëren en uitvoeren
 
-    #wait for next clock tick
-    clock.tick(GAME_SPEED)
+    def tekst_instellingen(tekst, lettertype):
+        tekst_weergave = lettertype.render(tekst, True, zwart)
+        return tekst_weergave, tekst_weergave.get_rect()
+
+    def startknop(mededeling, x ,y ,breedte, hoogte, inactivecolor, activecolor, action=None):
+        muis = pygame.mouse.get_pos()
+
+        if x + breedte > muis[0] > x and y + hoogte > muis[1] > y:
+            pygame.draw.rect(canvas, activecolor, (x, y, breedte, hoogte))
+        else:
+            pygame.draw.rect(canvas, inactivecolor, (x, y, breedte, hoogte))
+
+        tekst_in_kleine_letters = pygame.font.Font("freesansbold.ttf", 40)
+        tekst_uiterlijk, textRect = tekst_instellingen(mededeling, tekst_in_kleine_letters)
+        textRect.center = ((x + (breedte / 2)), (y + (hoogte / 2)))
+        canvas.blit(tekst_uiterlijk, textRect)
+
+    def startscherm_game():
+        start = True
+        while start:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    quit()
+
+            canvas.fill(wit)
+            tekst_in_hoofdletters = pygame.font.Font('freesansbold.ttf', 95)
+            tekst_uiterlijk, TextRect = tekst_instellingen("Space Shooter", tekst_in_hoofdletters)
+            TextRect.center = ((SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2))
+            canvas.blit(tekst_uiterlijk, TextRect)
+
+            startknop("Play!!!", 290, 380, 200, 100, donker_groen, licht_groen)
+
+            pygame.display.update()
+            clock.tick(15)
+
+    startscherm_game()
