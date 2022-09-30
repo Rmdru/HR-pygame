@@ -19,3 +19,10 @@ pygame.display.set_icon(logo)
 # create background
 background = pygame.Surface(screen.get_size())
 background = background.convert()
+
+# The number/amount of stars on the (background) screen
+N = 200
+
+# create N stars randomly on the background
+stars = [[random.randint(0, screen_width), random.randint(0, screen_height)]
+        for x in range(N)]
