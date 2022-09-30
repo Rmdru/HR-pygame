@@ -15,3 +15,7 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("Team nohtyp: Side scrolling shoot 'm up")
 logo = pygame.image.load("RuimteschipLogo.png")
 pygame.display.set_icon(logo)
+
+# create background
+background = pygame.Surface(screen.get_size())
+background = background.convert()
