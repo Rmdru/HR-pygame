@@ -26,3 +26,24 @@ N = 200
 # create N stars randomly on the background
 stars = [[random.randint(0, screen_width), random.randint(0, screen_height)]
         for x in range(N)]
+
+def main():
+    # main loop
+    clock = pygame.time.Clock()
+    while 1:
+        clock.tick(22)
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                return
+            elif event.type == KEYDOWN and event.key == K_ESCAPE:
+                return
+        background.fill((0, 0, 0))
+        for star in stars:
+            pygame.draw.line(background,
+                             (255, 255, 255), (star[0], star[1]), (star[0], star[1]))
+            star[0] = star[0] - 1
+            if star[0] < 0:
+                star[0] = screen_width
+                star[1] = random.randint(0, screen_height)
+        screen.blit(background, (0, 0))
+        pygame.display.flip()
