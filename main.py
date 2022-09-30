@@ -55,17 +55,14 @@ def startbutton(message, x, y, width, height, inactivecolour, activecolour, acti
     textRect.center = ((x + (width / 2)), (y + (height / 2)))
     canvas.blit(text_appearence_outsidelook, textRect)
 
-def startscreen_game():
-    while not quit_game_requested():
-        canvas.fill(WHITE)
-        text_in_capital_letters = pygame.font.Font('freesansbold.ttf', 95)
-        text_appearance_outsidelook, TextRect = text_settings("Space Shooter", text_in_capital_letters)
-        TextRect.center = ((SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2))
-        canvas.blit(text_appearance_outsidelook, TextRect)
+while not quit_game_requested():
+    canvas.fill(WHITE)
+    text_in_capital_letters = pygame.font.Font('freesansbold.ttf', 95)
+    text_appearance_outsidelook, TextRect = text_settings("Space Shooter", text_in_capital_letters)
+    TextRect.center = ((SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2))
+    canvas.blit(text_appearance_outsidelook, TextRect)
 
-        startbutton("Play!!!", 290, 380, 200, 100, DARK_GREEN, LIGHT_GREEN)
+    startbutton("Play!!!", 290, 380, 200, 100, DARK_GREEN, LIGHT_GREEN)
 
-        pygame.display.update()
-        clock.tick(GAME_SPEED)
-
-startscreen_game()
+    pygame.display.update()
+    clock.tick(GAME_SPEED)
