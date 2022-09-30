@@ -1,51 +1,51 @@
-
-# Bibliotheek importeren
+# Import the Pygame library
 import pygame
 
-# Zorgen dat de code bij de items in de Pygame bibliotheek kan
+# Ensure that the code can use the items in the Pygame library
 pygame.init()
 
-# Scherminstellingen
-scherm_breedte = 800
-scherm_hoogte = 600
+# Screen settings
+screen_width = 800
+screen_height = 600
 
-# Kleuren voor de schermachtergrond (wit) en de teksten (zwart)
-zwart = (0, 0, 0)
-wit = (255, 255, 255)
+# Colours for the screenbackground (white) and for the texts (black)
+black = (0, 0, 0)
+white = (255, 255, 255)
 
-# Kleuren van de startknop wanneer je wel/niet met de muis erover gaat
-donker_groen = (0, 200, 0)
-licht_groen = (0, 255, 0)
+# Colours for the startbutton when you do and don't move over the button with a mouse
+dark_green = (0, 200, 0)
+light_green = (0, 255, 0)
 
-# Balk boven het scherm - toegevoegde naam en logo
-startscherm = pygame.display.set_mode((scherm_breedte, scherm_hoogte))
+# Title bar above the screen - added title and logo
+startscreen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption('Team: nohtyp')
 clock = pygame.time.Clock()
-
 logo = pygame.image.load("RuimteschipLogo.png")
 pygame.display.set_icon(logo)
 
-# Functies definiëren en uitvoeren
+# Determine functions and execute them
 
-def tekst_instellingen(tekst, lettertype):
-    tekst_weergave = lettertype.render(tekst, True, zwart)
-    return tekst_weergave, tekst_weergave.get_rect()
+def text_settings(text, lettertype_font):
+    text_display = lettertype_font.render(text, True, black)
+    return text_display, text_display.get_rect()
 
-def startknop(mededeling,x,y,breedte,hoogte,inactivecolor,activecolor,action=None):
+
+def startbutton(message, x, y, width, height, inactivecolour, activecolour, action=None):
     muis = pygame.mouse.get_pos()
     muisklik = pygame.mouse.get_pressed()
 
-    if x + breedte > muis[0] > x and y + hoogte > muis[1] > y:
-        pygame.draw.rect(startscherm, activecolor, (x, y, breedte, hoogte))
+    if x + width > muis[0] > x and y + height > muis[1] > y:
+        pygame.draw.rect(startscreen, activecolour, (x, y, width, height))
     else:
-        pygame.draw.rect(startscherm, inactivecolor, (x, y, breedte, hoogte))
+        pygame.draw.rect(startscreen, inactivecolour, (x, y, width, height))
 
-    tekst_in_kleine_letters = pygame.font.Font("freesansbold.ttf", 40)
-    tekst_uiterlijk, textRect = tekst_instellingen(mededeling, tekst_in_kleine_letters)
-    textRect.center = ((x + (breedte / 2)), (y + (hoogte / 2)))
-    startscherm.blit(tekst_uiterlijk, textRect)
+    text_in_small_letters = pygame.font.Font("freesansbold.ttf", 40)
+    text_appearence_outsidelook, textRect = text_settings(message, text_in_small_letters)
+    textRect.center = ((x + (width / 2)), (y + (height / 2)))
+    startscreen.blit(text_appearence_outsidelook, textRect)
 
-def startscherm_game():
+
+def startscreen_game():
     start = True
     while start:
         for event in pygame.event.get():
@@ -53,15 +53,16 @@ def startscherm_game():
                 pygame.quit()
                 quit()
 
-        startscherm.fill(wit)
-        tekst_in_hoofdletters = pygame.font.Font('freesansbold.ttf', 95)
-        tekst_uiterlijk, TextRect = tekst_instellingen("Space Shooter", tekst_in_hoofdletters)
-        TextRect.center = ((scherm_breedte / 2), (scherm_hoogte / 2))
-        startscherm.blit(tekst_uiterlijk, TextRect)
+        startscreen.fill(white)
+        text_in_capital_letters = pygame.font.Font('freesansbold.ttf', 95)
+        text_appearance_outsidelook, TextRect = text_settings("Space Shooter", text_in_capital_letters)
+        TextRect.center = ((screen_width / 2), (screen_height / 2))
+        startscreen.blit(text_appearance_outsidelook, TextRect)
 
-        startknop("Play!!!", 290, 380, 200, 100, donker_groen, licht_groen)
+        startbutton("Play!!!", 290, 380, 200, 100, dark_green, light_green)
 
         pygame.display.update()
         clock.tick(15)
 
-startscherm_game()
+
+startscreen_game()
