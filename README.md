@@ -11,3 +11,4 @@ Installeer pygame met pip:
 ```python
 pip install -r requirements.txt
 ```
+
