@@ -47,3 +47,5 @@ def main():
                 star[1] = random.randint(0, screen_height)
         screen.blit(background, (0, 0))
         pygame.display.flip()
+
+if __name__ == '__main__': main()
