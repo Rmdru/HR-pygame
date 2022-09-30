@@ -9,7 +9,10 @@ pygame.init()
 # vars
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
-BACKGROUND_COLOR = (0, 0, 0)
+TARGET_AMOUNT = 5
+TARGET_SPEED = [-5, 0]
+TARGET_SIZE = 50
+TARGET_SPAWN_AREA_WIDTH = 0.5
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 DARK_GREEN = (0, 200, 0)
@@ -55,6 +58,16 @@ def game_loop():
     stars = [[random.randint(0, SCREEN_WIDTH), random.randint(0, SCREEN_HEIGHT)]
             for x in range(STARS_AMOUNT)]
 
+    #generate target surfaces
+    targets_surface = []
+    targets_color = []
+    for i in range(TARGET_AMOUNT):
+        target_color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+        spawn_area_width = SCREEN_WIDTH * TARGET_SPAWN_AREA_WIDTH
+        target_surface = pygame.Rect(pygame.Rect(random.randint(spawn_area_width, SCREEN_WIDTH - TARGET_SIZE), random.randint(0, SCREEN_HEIGHT - TARGET_SIZE), TARGET_SIZE, TARGET_SIZE))
+        targets_surface.append(target_surface)
+        targets_color.append(target_color)
+
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -69,7 +82,13 @@ def game_loop():
             if star[0] < 0:
                 star[0] = SCREEN_WIDTH
                 star[1] = random.randint(0, SCREEN_HEIGHT)
+
         canvas.blit(background, (0, 0))
+
+        #loop through target surfaces to draw them on the canvas
+        for index, item in enumerate(targets_surface):
+            item.move_ip(TARGET_SPEED)
+            pygame.draw.rect(canvas, targets_color[index], item)
 
         pygame.display.update()
         clock.tick(GAME_SPEED)
@@ -92,7 +111,9 @@ def startbutton(message, x, y, width, height, inactivecolour, activecolour, acti
     canvas.blit(text_appearence_outsidelook, textRect)
 
 while not quit_game_requested():
+    #bg color
     canvas.fill(WHITE)
+
     text_in_capital_letters = pygame.font.Font('freesansbold.ttf', 95)
     text_appearance_outsidelook, TextRect = text_settings("Space Shooter", text_in_capital_letters)
     TextRect.center = ((SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2))
@@ -100,5 +121,8 @@ while not quit_game_requested():
 
     startbutton("Play!!!", 290, 380, 200, 100, DARK_GREEN, LIGHT_GREEN, "play")
 
-    pygame.display.update()
+    #update the display
+    pygame.display.flip()
+
+    #wait for next clock tick
     clock.tick(GAME_SPEED)
