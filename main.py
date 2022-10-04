@@ -93,10 +93,6 @@ def game_loop():
         canvas.blit(PlayerImg, (x, y))
 
     while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                quit()
 
         background.fill((0, 0, 0))
         for star in stars:
@@ -121,6 +117,9 @@ def game_loop():
 
         # Check events
         for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
             # If keystroke is Pressed
             if event.type == pygame.KEYDOWN:
                 ## Movement
