@@ -1,41 +1,26 @@
-#imports
-import pygame
+# font object..................................
+def create_font(t, s=72, c=(255, 255, 0), b=False, i=False):
+    font = pygame.font.SysFont("Arial", s, bold=b, italic=i)
+    text = font.render(t, True, c)
+    return text
 
-#initializing pygame
-pygame.init()
 
-#vars
-SCREEN_WIDTH = 1280
-SCREEN_HEIGHT = 720
-BACKGROUND_COLOR = (0, 0, 0)
-BLACK = (0, 0, 0)
-WHITE = (255, 255, 255)
-GREEN = (0, 255, 0)
+# Text to be rendered with create_font
+game_over = create_font("GAME OVER")
+restart = create_font("Press Space to restart", 36, (9, 0, 180))
 
-#application window name
-pygame.display.set_caption("Werkplaats 1: PyGame Nohtyp")
-
-#set application window size
-canvas = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-
-#application window icon
-logo = pygame.image.load("img/RuimteschipLogo.png").convert_alpha()
-logo_rect = logo.get_rect()
-
-pygame.display.set_caption ("Game Over")
-
-#Loop until the user clicks on the close button
-done = False
-
-# Used to set how fast the screen refreshes
+canvas = pygame.display.set_mode((600, 400))
+loop = True
 clock = pygame.time.Clock()
-
-
-game_over = False
-if self._is_collision():
-    game_over = True
-    return game_over, self.score
-
-
+while loop == True:
+    canvas.fill((0, 0, 0))
+    x, y = pygame.mouse.get_pos()
+    canvas.blit(game_over, (100, 150))
+    canvas.blit(restart, (x, y))
+    for e in pygame.event.get():
+        if e.type == QUIT:
+            loop = 0
+    pygame.display.update()
+    clock.tick(60)
 
 
