@@ -12,7 +12,8 @@ SCREEN_HEIGHT = 600
 TARGET_AMOUNT = 5
 TARGET_SPEED = [-3, 0]
 TARGET_SIZE = 50
-TARGET_SPAWN_AREA_WIDTH = 0.5
+TARGET_SPAWN_AREA_WIDTH = 0.4
+TARGET_SPAWN_INTERVAL = 5
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 DARK_GREEN = (0, 200, 0)
@@ -47,6 +48,8 @@ def text_settings(text, lettertype_font):
     return text_display, text_display.get_rect()
 
 def game_loop():
+    game_frame = 0
+
     # create background
     background = pygame.Surface(canvas.get_size())
     background = background.convert()
@@ -61,12 +64,16 @@ def game_loop():
     #generate target surfaces
     targets_surface = []
     targets_color = []
-    for i in range(TARGET_AMOUNT):
-        target_color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
-        spawn_area_width = SCREEN_WIDTH * TARGET_SPAWN_AREA_WIDTH
-        target_surface = pygame.Rect(pygame.Rect(random.randint(spawn_area_width, SCREEN_WIDTH - TARGET_SIZE), random.randint(0, SCREEN_HEIGHT - TARGET_SIZE), TARGET_SIZE, TARGET_SIZE))
-        targets_surface.append(target_surface)
-        targets_color.append(target_color)
+
+    def spawn_targets():
+        for i in range(TARGET_AMOUNT):
+            target_color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+            spawn_area_width = SCREEN_WIDTH * TARGET_SPAWN_AREA_WIDTH
+            target_surface = pygame.Rect(pygame.Rect(random.randint(spawn_area_width, SCREEN_WIDTH - TARGET_SIZE), random.randint(0, SCREEN_HEIGHT - TARGET_SIZE), TARGET_SIZE, TARGET_SIZE))
+            targets_surface.append(target_surface)
+            targets_color.append(target_color)
+
+    spawn_targets()
 
     # Player
     PlayerImg = pygame.image.load("rocket.png")
@@ -93,6 +100,11 @@ def game_loop():
         canvas.blit(PlayerImg, (x, y))
 
     while True:
+        game_frame = game_frame + 1
+        game_time = game_frame / GAME_SPEED
+
+        if game_time % TARGET_SPAWN_INTERVAL == 0:
+            spawn_targets()
 
         background.fill((0, 0, 0))
         for star in stars:
