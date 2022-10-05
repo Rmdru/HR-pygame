@@ -120,24 +120,18 @@ def game_loop():
                 quit()
             # If keystroke is Pressed
             if event.type == pygame.KEYDOWN:
-                ## Movement
-                print("Key down:")
                 # If a key, X decreases
                 if event.key == pygame.K_a:
                     playerX_change = -player_speed
-                    print("a")
                 # If d key, X increases
                 if event.key == pygame.K_d:
                     playerX_change = +player_speed
-                    print("d")
                 # If w key, Y decreases
                 if event.key == pygame.K_w:
                     playerY_change = -player_speed
-                    print("w")
                 # If s key, Y increases
                 if event.key == pygame.K_s:
                     playerY_change = +player_speed
-                    print("s")
                 
                 ## Shooting
                 if event.key == pygame.K_SPACE and bullet_state == "ready":
@@ -146,16 +140,13 @@ def game_loop():
                     # Set bullet Y coordinate to current player Y coordinate
                     bulletY = playerY
                     fire_bullet(bulletX, bulletY)
-                    print("space")
                     
                     # Change bullet state to "fire" if space is pressed
                     while bullet_state == "ready":
                         bullet_state = "fire"
-                        print(bullet_state)
 
             # If keystroke is released, change speed to 0
             if event.type == pygame.KEYUP:
-                print("Key up")
                 if event.key == pygame.K_a:
                     playerX_change = 0
                 if event.key == pygame.K_d:
