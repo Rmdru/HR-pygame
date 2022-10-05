@@ -86,17 +86,13 @@ def game_loop():
     BulletImg_Y_size = 32
     bulletX = playerX
     bulletY = playerY + (BulletImg_Y_size // 2)
-    bulletX_change = 1.5
+    bulletX_change = 15
     bullet_state = "ready"
 
     def player(x, y):
         canvas.blit(PlayerImg, (x, y))
 
     while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                quit()
 
         background.fill((0, 0, 0))
         for star in stars:
@@ -115,12 +111,13 @@ def game_loop():
             pygame.draw.rect(canvas, targets_color[index], item)
 
         def fire_bullet(x, y):
-            global bullet_state
-            bullet_state = "fire"
             canvas.blit(BulletImg, (x + (BulletImg_X_size // 2 ), y + (BulletImg_Y_size // 2)))
 
         # Check events
         for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
             # If keystroke is Pressed
             if event.type == pygame.KEYDOWN:
                 ## Movement
@@ -148,8 +145,13 @@ def game_loop():
                     bulletX = playerX + 32
                     # Set bullet Y coordinate to current player Y coordinate
                     bulletY = playerY
-                    fire_bullet(playerX, bulletY)
+                    fire_bullet(bulletX, bulletY)
                     print("space")
+                    
+                    # Change bullet state to "fire" if space is pressed
+                    while bullet_state == "ready":
+                        bullet_state = "fire"
+                        print(bullet_state)
 
             # If keystroke is released, change speed to 0
             if event.type == pygame.KEYUP:
