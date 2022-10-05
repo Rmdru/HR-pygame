@@ -47,6 +47,7 @@ def text_settings(text, lettertype_font):
     text_display = lettertype_font.render(text, True, BLACK)
     return text_display, text_display.get_rect()
 
+# made top left score text size color
 def create_font(t, s=32, c=(255, 255, 255), b=False, i=False):
     font = pygame.font.SysFont('Arial', s, bold=b, italic=i)
     text = font.render(t, True, c)
@@ -203,8 +204,10 @@ def game_loop():
         player(playerX, playerY)
 
         score_amount = 1
+        # write score on corner of screen
         score_texts = create_font(f'Score:{score_amount}')
         canvas.blit(score_texts, (10, 10))
+
         pygame.display.update()
         clock.tick(GAME_SPEED)
 
