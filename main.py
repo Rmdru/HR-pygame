@@ -9,11 +9,10 @@ pygame.init()
 # vars
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
-TARGET_AMOUNT = 5
+TARGET_AMOUNT = 1
 TARGET_SPEED = [-3, 0]
 TARGET_SIZE = 50
-TARGET_SPAWN_AREA_WIDTH = 0.6
-TARGET_SPAWN_INTERVAL = 5
+TARGET_SPAWN_INTERVAL = 3
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 DARK_GREEN = (0, 200, 0)
@@ -74,8 +73,7 @@ def game_loop():
     def spawn_targets():
         for i in range(TARGET_AMOUNT):
             target_color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
-            spawn_area_width = SCREEN_WIDTH * TARGET_SPAWN_AREA_WIDTH
-            target_surface = pygame.Rect(pygame.Rect(random.randint(spawn_area_width, SCREEN_WIDTH - TARGET_SIZE), random.randint(0, SCREEN_HEIGHT - TARGET_SIZE), TARGET_SIZE, TARGET_SIZE))
+            target_surface = pygame.Rect(pygame.Rect(random.randint(SCREEN_WIDTH, SCREEN_WIDTH + 50), random.randint(0, SCREEN_HEIGHT - TARGET_SIZE), TARGET_SIZE, TARGET_SIZE))
             targets_surface.append(target_surface)
             targets_color.append(target_color)
 
