@@ -275,13 +275,15 @@ def create_font(t, s=72, c=(255, 255, 0), b=False, i=False):
 
 # Text to be rendered with create_font
 game_over_text = create_font("GAME OVER")
-restart_text = create_font("Press Space to restart", 36, (9, 0, 180))
+restart_text = create_font("Press Space to quit", 36, (9, 0, 180))
 
 canvas = pygame.display.set_mode((800, 600))
 loop = True
 clock = pygame.time.Clock()
 while loop == True:
     canvas.fill((0, 0, 0))
+
+
 
     game_over_text_rect = game_over_text.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2))
     restart_text_rect = restart_text.get_rect(center=(SCREEN_WIDTH / 2, (SCREEN_HEIGHT / 2 + 75)))
@@ -290,6 +292,11 @@ while loop == True:
     for e in pygame.event.get():
         if e.type == QUIT:
             loop = 0
+
+            for event in pygame.event.get():
+                if event.type == pygame.K_SPACE:
+                    pygame.quit()
+                    quit()
     pygame.display.update()
     clock.tick(60)
 
