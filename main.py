@@ -52,6 +52,24 @@ def create_font(t, s=32, c=(255, 255, 255), b=False, i=False):
     text = font.render(t, True, c)
     return text
 
+# Start screen
+def start_screen():
+    #bg color
+    canvas.fill(WHITE)
+
+    text_in_capital_letters = pygame.font.Font('freesansbold.ttf', 95)
+    text_appearance_outsidelook, TextRect = text_settings("Space Shooter", text_in_capital_letters)
+    TextRect.center = ((SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2))
+    canvas.blit(text_appearance_outsidelook, TextRect)
+
+    startbutton("Play!!!", 290, 380, 200, 100, DARK_GREEN, LIGHT_GREEN, "play")
+
+    #update the display
+    pygame.display.flip()
+
+    #wait for next clock tick
+    clock.tick(GAME_SPEED)
+
 # game over screen
 def game_over_screen():
     # font object..................................
@@ -62,7 +80,7 @@ def game_over_screen():
 
     # Text to be rendered with create_font
     game_over_text = create_font("GAME OVER")
-    restart_text = create_font("Press Space to quit", 36, (9, 0, 180))
+    restart_text = create_font("Press Space to restart / Press Esc to quit", 36, (9, 0, 180))
 
     # loop to render game over screen
     while True:
@@ -72,9 +90,16 @@ def game_over_screen():
         canvas.blit(game_over_text, game_over_text_rect)
         canvas.blit(restart_text, restart_text_rect)
         for event in pygame.event.get():
-            if event.type == pygame.K_SPACE or event.type == pygame.QUIT:
+            if event.type == pygame.QUIT:
                 pygame.quit()
-                quit() 
+                quit()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    game_loop()
+                elif event.key == pygame.K_ESCAPE:
+                    pygame.quit()
+                    quit()
+
         pygame.display.update()
         clock.tick(GAME_SPEED)
 
@@ -272,18 +297,4 @@ def startbutton(message, x, y, width, height, inactivecolour, activecolour, acti
     canvas.blit(text_appearence_outsidelook, textRect)
 
 while not quit_game_requested():
-    #bg color
-    canvas.fill(WHITE)
-
-    text_in_capital_letters = pygame.font.Font('freesansbold.ttf', 95)
-    text_appearance_outsidelook, TextRect = text_settings("Space Shooter", text_in_capital_letters)
-    TextRect.center = ((SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2))
-    canvas.blit(text_appearance_outsidelook, TextRect)
-
-    startbutton("Play!!!", 290, 380, 200, 100, DARK_GREEN, LIGHT_GREEN, "play")
-
-    #update the display
-    pygame.display.flip()
-
-    #wait for next clock tick
-    clock.tick(GAME_SPEED)
+    start_screen()
