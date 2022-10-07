@@ -6,11 +6,6 @@ from pygame.locals import *
 # initializing pygame
 pygame.init()
 
-
-# background music
-music = pygame.mixer.music.load("music.mp3")
-pygame.mixer.music.play(-1)
-
 # vars
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
@@ -31,7 +26,7 @@ pygame.display.set_caption("Werkplaats 1: PyGame Nohtyp")
 canvas = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 # set application window icon
-icon = pygame.image.load("nohtyp_logo_simplified.png")
+icon = pygame.image.load("media\images\_nohtyp_logo_simplified.png")
 pygame.display.set_icon(icon)
 
 # start pygame clock
@@ -77,7 +72,7 @@ def game_over_screen():
         canvas.blit(game_over_text, game_over_text_rect)
         canvas.blit(restart_text, restart_text_rect)
         for event in pygame.event.get():
-            if event.key == pygame.K_SPACE or event.type == pygame.QUIT:
+            if event.type == pygame.K_SPACE or event.type == pygame.QUIT:
                 pygame.quit()
                 quit() 
         pygame.display.update()
@@ -86,6 +81,10 @@ def game_over_screen():
 def game_loop():
     #var for game loop, if true, game runs
     game_loop = True
+
+    # background music
+    music = pygame.mixer.music.load("media\sounds\_music.mp3")
+    pygame.mixer.music.play(-1)
 
     #create game frame variable
     game_frame = 0
@@ -122,7 +121,7 @@ def game_loop():
             game_over_screen()
 
     # Player
-    PlayerImg = pygame.image.load("rocket.png")
+    PlayerImg = pygame.image.load("media\images\_rocket.png")
     PlayerImg_X_size = 64
     PlayerImg_Y_size = 64
     playerX = SCREEN_WIDTH / 10
@@ -134,7 +133,7 @@ def game_loop():
     # Bullet
     # Ready = Cant't see the bullet
     # Fire = Bullet is moving on screen
-    BulletImg = pygame.image.load("bullet.png")
+    BulletImg = pygame.image.load("media\images\_bullet.png")
     BulletImg_X_size = 32
     BulletImg_Y_size = 32
     bulletX = playerX
