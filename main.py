@@ -10,6 +10,11 @@ from pygame.locals import *
 # initializing pygame
 pygame.init()
 
+
+# background music
+music = pygame.mixer.music.load("music.mp3")
+pygame.mixer.music.play(-1)
+
 # vars
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
@@ -36,6 +41,7 @@ pygame.display.set_icon(icon)
 
 # start pygame clock
 clock = pygame.time.Clock()
+
 
 # function to check if user has requested to quit game
 def quit_game_requested():
@@ -284,7 +290,6 @@ while loop == True:
     canvas.fill((0, 0, 0))
 
 
-
     game_over_text_rect = game_over_text.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2))
     restart_text_rect = restart_text.get_rect(center=(SCREEN_WIDTH / 2, (SCREEN_HEIGHT / 2 + 75)))
     canvas.blit(game_over_text, game_over_text_rect)
@@ -299,5 +304,3 @@ while loop == True:
                     quit()
     pygame.display.update()
     clock.tick(60)
-
-
