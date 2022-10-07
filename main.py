@@ -52,7 +52,37 @@ def create_font(t, s=32, c=(255, 255, 255), b=False, i=False):
     text = font.render(t, True, c)
     return text
 
+# game over screen
+def game_over_screen():
+    # font object..................................
+    def create_font(t, s=72, c=(255, 255, 0), b=False, i=False):
+        font = pygame.font.SysFont("Arial", s, bold=b, italic=i)
+        text = font.render(t, True, c)
+        return text
+
+    # Text to be rendered with create_font
+    game_over_text = create_font("GAME OVER")
+    restart_text = create_font("Press Space to quit", 36, (9, 0, 180))
+
+    # loop to render game over screen
+    while True:
+        canvas.fill((0, 0, 0))
+        game_over_text_rect = game_over_text.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2))
+        restart_text_rect = restart_text.get_rect(center=(SCREEN_WIDTH / 2, (SCREEN_HEIGHT / 2 + 75)))
+        canvas.blit(game_over_text, game_over_text_rect)
+        canvas.blit(restart_text, restart_text_rect)
+        for event in pygame.event.get():
+            if event.key == pygame.K_SPACE or event.type == pygame.QUIT:
+                pygame.quit()
+                quit() 
+        pygame.display.update()
+        clock.tick(GAME_SPEED)
+
 def game_loop():
+    #var for game loop, if true, game runs
+    game_loop = True
+
+    #create game frame variable
     game_frame = 0
 
     # create background
@@ -70,6 +100,7 @@ def game_loop():
     targets_surface = []
     targets_color = []
 
+    #function to spawn targets
     def spawn_targets():
         for i in range(TARGET_AMOUNT):
             target_color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
@@ -78,6 +109,12 @@ def game_loop():
             targets_color.append(target_color)
 
     spawn_targets()
+
+    # function to trigger game over screen when target hit leftside of the window
+    def target_hit_leftside(target_rect):
+        if target_rect.left <= 0:
+            game_loop = False
+            game_over_screen()
 
     # Player
     PlayerImg = pygame.image.load("rocket.png")
@@ -103,10 +140,12 @@ def game_loop():
     def player(x, y):
         canvas.blit(PlayerImg, (x, y))
 
-    while True:
+    while game_loop:
+        #add time element to the game
         game_frame = game_frame + 1
         game_time = game_frame / GAME_SPEED
 
+        #spawn targets on TARGET_SPAWN_INTERVAL
         if game_time % TARGET_SPAWN_INTERVAL == 0:
             spawn_targets()
 
@@ -121,10 +160,12 @@ def game_loop():
 
         canvas.blit(background, (0, 0))
 
-        #loop through target surfaces to draw them on the canvas
+        # loop through target surfaces to draw them on the canvas
         for index, item in enumerate(targets_surface):
             item.move_ip(TARGET_SPEED)
             pygame.draw.rect(canvas, targets_color[index], item)
+            target_hit_leftside(item)
+
 
         def fire_bullet(x, y):
             canvas.blit(BulletImg, (x + (BulletImg_X_size // 2 ), y + (BulletImg_Y_size // 2)))
