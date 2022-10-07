@@ -6,6 +6,11 @@ from pygame.locals import *
 # initializing pygame
 pygame.init()
 
+
+# background music
+music = pygame.mixer.music.load("music.mp3")
+pygame.mixer.music.play(-1)
+
 # vars
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
