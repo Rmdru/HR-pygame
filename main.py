@@ -133,7 +133,7 @@ def game_loop():
     def spawn_targets():
         for i in range(TARGET_AMOUNT):
             target_color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
-            target_surface = pygame.Rect(pygame.Rect(random.randint(SCREEN_WIDTH, SCREEN_WIDTH + 50), random.randint(0, SCREEN_HEIGHT - TARGET_SIZE), TARGET_SIZE, TARGET_SIZE))
+            target_surface = pygame.Rect(random.randint(SCREEN_WIDTH, SCREEN_WIDTH + 50), random.randint(0, SCREEN_HEIGHT - TARGET_SIZE), TARGET_SIZE, TARGET_SIZE)
             targets_surface.append(target_surface)
             targets_color.append(target_color)
 
@@ -147,6 +147,7 @@ def game_loop():
 
     # Player
     PlayerImg = pygame.image.load("media\images\_rocket.png")
+    player_img_rect = PlayerImg.get_rect()
     PlayerImg_X_size = 64
     PlayerImg_Y_size = 64
     playerX = SCREEN_WIDTH / 10
@@ -167,7 +168,8 @@ def game_loop():
     bullet_state = "ready"
 
     def player(x, y):
-        canvas.blit(PlayerImg, (x, y))
+        player_img_rect.center = (x, y)
+        canvas.blit(PlayerImg, player_img_rect)
 
     while game_loop:
         #add time element to the game
@@ -180,8 +182,7 @@ def game_loop():
 
         background.fill((0, 0, 0))
         for star in stars:
-            pygame.draw.line(background,
-                             (255, 255, 255), (star[0], star[1]), (star[0], star[1]))
+            pygame.draw.line(background, (255, 255, 255), (star[0], star[1]), (star[0], star[1]))
             star[0] = star[0] - 1
             if star[0] < 0:
                 star[0] = SCREEN_WIDTH
@@ -270,6 +271,12 @@ def game_loop():
             bullet_state = "ready"
 
         player(playerX, playerY)
+
+        # call game over function if player hit target
+        for target in targets_surface:
+            if pygame.Rect.colliderect(player_img_rect, target):
+                game_loop = False
+                game_over_screen()
 
         score_amount = 1
         # write score on corner of screen
