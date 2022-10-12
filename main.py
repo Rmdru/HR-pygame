@@ -9,10 +9,8 @@ pygame.init()
 # vars
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
-TARGET_AMOUNT = 1
 TARGET_SPEED = [-3, 0]
 TARGET_SIZE = 50
-TARGET_SPAWN_INTERVAL = 3
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 DARK_GREEN = (0, 200, 0)
@@ -31,6 +29,9 @@ pygame.display.set_icon(icon)
 
 # start pygame clock
 clock = pygame.time.Clock()
+
+# create score variable
+score_amount = 1
 
 # function to check if user has requested to quit game
 def quit_game_requested():
@@ -125,13 +126,17 @@ def game_loop():
     stars = [[random.randint(0, SCREEN_WIDTH), random.randint(0, SCREEN_HEIGHT)]
             for x in range(STARS_AMOUNT)]
 
+    #variable for game difficulty
+    target_amount = 1
+    target_spawn_interval = 3
+
     #generate target surfaces
     targets_surface = []
     targets_color = []
 
     #function to spawn targets
     def spawn_targets():
-        for i in range(TARGET_AMOUNT):
+        for i in range(target_amount):
             target_color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
             target_surface = pygame.Rect(random.randint(SCREEN_WIDTH, SCREEN_WIDTH + 50), random.randint(0, SCREEN_HEIGHT - TARGET_SIZE), TARGET_SIZE, TARGET_SIZE)
             targets_surface.append(target_surface)
@@ -172,12 +177,18 @@ def game_loop():
         canvas.blit(PlayerImg, player_img_rect)
 
     while game_loop:
-        #add time element to the game
+        if score_amount % 10 == 0 and target_spawn_interval >= 1:
+            target_spawn_interval -= 1
+
+        if score_amount % 10 == 0 and target_spawn_interval == 1 and target_amount <= 5:
+            target_amount += 1
+
+        # add time element to the game
         game_frame = game_frame + 1
         game_time = game_frame / GAME_SPEED
 
-        #spawn targets on TARGET_SPAWN_INTERVAL
-        if game_time % TARGET_SPAWN_INTERVAL == 0:
+        # spawn targets on target_spawn_interval
+        if game_time % 1 == 0:
             spawn_targets()
 
         background.fill((0, 0, 0))
@@ -278,7 +289,6 @@ def game_loop():
                 game_loop = False
                 game_over_screen()
 
-        score_amount = 1
         # write score on corner of screen
         score_texts = create_font(f'Score:{score_amount}')
         canvas.blit(score_texts, (10, 10))
