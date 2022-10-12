@@ -169,7 +169,7 @@ def game_loop():
     BulletImg_X_size = 32
     BulletImg_Y_size = 32
     bulletX = playerX
-    bulletY = playerY + (BulletImg_Y_size // 2)
+    bullet_placement = (BulletImg_Y_size // 2)
     bulletX_change = 15
     bullet_state = "ready"
 
@@ -210,7 +210,7 @@ def game_loop():
 
 
         def fire_bullet(x, y):
-            canvas.blit(BulletImg, (x + (BulletImg_X_size // 2 ), y + (BulletImg_Y_size // 2)))
+            canvas.blit(BulletImg, (x, (y -bullet_placement)))
 
         # Check events
         for event in pygame.event.get():
