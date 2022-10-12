@@ -178,9 +178,11 @@ def game_loop():
         canvas.blit(PlayerImg, player_img_rect)
 
     while game_loop:
+        # increase target spawn interval
         if score_amount % 10 == 0 and target_spawn_interval >= 1:
             target_spawn_interval -= 1
 
+        # increase target amount
         if score_amount % 10 == 0 and target_spawn_interval == 1 and target_amount <= 5:
             target_amount += 1
 
