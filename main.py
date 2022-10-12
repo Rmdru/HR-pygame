@@ -137,8 +137,9 @@ def game_loop():
     #function to spawn targets
     def spawn_targets():
         for i in range(target_amount):
+            random_pos = random.randint(50, 200)
             target_color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
-            target_surface = pygame.Rect(random.randint(SCREEN_WIDTH, SCREEN_WIDTH + 50), random.randint(0, SCREEN_HEIGHT - TARGET_SIZE), TARGET_SIZE, TARGET_SIZE)
+            target_surface = pygame.Rect(random.randint(SCREEN_WIDTH, SCREEN_WIDTH + random_pos), random.randint(0, SCREEN_HEIGHT - TARGET_SIZE), TARGET_SIZE, TARGET_SIZE)
             targets_surface.append(target_surface)
             targets_color.append(target_color)
 
