@@ -47,7 +47,7 @@ def quit_game_requested():
 
 # Determine functions and execute them
 def text_settings(text, lettertype_font):
-    text_display = lettertype_font.render(text, True, BLACK)
+    text_display = lettertype_font.render(text, True, WHITE)
     return text_display, text_display.get_rect()
 
 # made top left score text size color
@@ -56,19 +56,44 @@ def create_font(t, s=32, c=(255, 255, 255), b=False, i=False):
     text = font.render(t, True, c)
     return text
 
+# Create background
+background = pygame.Surface(canvas.get_size())
+background = background.convert()
+
+# The number/amount of stars on the (background) screen
+STARS_AMOUNT = 200
+
+# Create N stars randomly on the background
+stars = [[random.randint(0, SCREEN_WIDTH), random.randint(0, SCREEN_HEIGHT)]
+        for x in range(STARS_AMOUNT)]
+
+def star_background():
+    
+    # Create the background
+    background.fill((0, 0, 0))
+    for star in stars:
+        pygame.draw.line(background,
+                            (255, 255, 255), (star[0], star[1]), (star[0], star[1]))
+        star[0] = star[0] - 1
+        if star[0] < 0:
+            star[0] = SCREEN_WIDTH
+            star[1] = random.randint(0, SCREEN_HEIGHT)
+
+    canvas.blit(background, (0, 0))
+
+
 # Start screen
 def start_screen():
-    #bg color
-    canvas.fill(WHITE)
+    star_background()
 
     text_in_capital_letters = pygame.font.Font('freesansbold.ttf', 95)
     text_appearance_outsidelook, TextRect = text_settings("Space Shooter", text_in_capital_letters)
     TextRect.center = ((SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2))
     canvas.blit(text_appearance_outsidelook, TextRect)
 
-    startbutton("Play!!!", 290, 420, 200, 100, DARK_GREEN, LIGHT_GREEN, "play")
+    startbutton("Play", 290, 420, 200, 100, DARK_GREEN, LIGHT_GREEN, "play")
 
-    high_score_screen("High Score = " + str(high_score_json["highscore"]), 290, 325, 200, 100, DARK_GREEN, LIGHT_GREEN)
+    high_score_screen("High Score: " + str(high_score_json["highscore"]), 290, 325, 200, 100, DARK_GREEN, LIGHT_GREEN)
 
     #update the display
     pygame.display.flip()
@@ -124,21 +149,13 @@ def game_loop():
 
     #var for game loop, if true, game runs
     game_loop = True
-
+    
     # background music
     music = pygame.mixer.music.load("media\sounds\_music.mp3")
     pygame.mixer.music.play(-1)
 
     #create game frame variable
     game_frame = 0
-
-    # create background
-    background = pygame.Surface(canvas.get_size())
-    background = background.convert()
-
-    # create N stars randomly on the background
-    stars = [[random.randint(0, SCREEN_WIDTH), random.randint(0, SCREEN_HEIGHT)]
-            for x in range(STARS_AMOUNT)]
 
     #variable for game difficulty
     target_amount = 1
@@ -174,7 +191,7 @@ def game_loop():
     playerY = ( SCREEN_HEIGHT // 2 ) - ( PlayerImg_Y_size // 2 )
     playerX_change = 0
     playerY_change = 0
-    player_speed = 5
+    player_speed = 10
 
     # Bullet
     # Ready = Cant't see the bullet
@@ -184,7 +201,7 @@ def game_loop():
     BulletImg_Y_size = 32
     bulletX = playerX
     bulletY = playerY
-    bulletX_change = 15
+    bulletX_change = 25
     bullet_state = "ready"
 
     def player(x, y):
@@ -195,20 +212,13 @@ def game_loop():
         # add time element to the game
         game_frame = game_frame + 1
         game_time = game_frame / GAME_SPEED
+            
+        # Initialise the star background
+        star_background()
 
         # spawn targets on target_spawn_interval
         if game_time % 1 == 0:
             spawn_targets()
-
-        background.fill((0, 0, 0))
-        for star in stars:
-            pygame.draw.line(background, (255, 255, 255), (star[0], star[1]), (star[0], star[1]))
-            star[0] = star[0] - 1
-            if star[0] < 0:
-                star[0] = SCREEN_WIDTH
-                star[1] = random.randint(0, SCREEN_HEIGHT)
-
-        canvas.blit(background, (0, 0))
 
         # loop through target surfaces to draw them on the canvas
         for index, item in enumerate(targets_surface):
