@@ -105,7 +105,7 @@ def game_over_screen():
     # Text to be rendered with create_font
     game_over_text = create_font("GAME OVER")
     restart_text = create_font("Press Space to restart / Press Esc to quit", 36, (9, 0, 180))
-
+    
     # loop to render game over screen
     while True:
         canvas.fill((0, 0, 0))
@@ -196,7 +196,7 @@ def game_loop():
     def player(x, y):
         player_img_rect.center = (x, y)
         canvas.blit(PlayerImg, player_img_rect)
-
+    score_amount=1
     while game_loop:
         if score_amount % 10 == 0 and target_spawn_interval >= 1:
             target_spawn_interval -= 1
@@ -277,6 +277,18 @@ def game_loop():
 
         playerX += playerX_change
         playerY += playerY_change
+
+        # write score on corner of screen
+        score_texts = create_font(f'Score:{score_amount}')
+        canvas.blit(score_texts, (10, 10))
+        
+        # making score count go up
+        for target in targets_surface:
+            bullet = Rect((bulletX, bulletY),(BulletImg_X_size,BulletImg_Y_size))
+            if target.colliderect(bullet):
+                targets_surface.remove(target)
+                if target.colliderect(bullet):
+                    score_amount+=1
 
         # Stop player if they hit the screen border
         if playerX <= 0:
