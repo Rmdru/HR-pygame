@@ -192,12 +192,6 @@ def game_loop():
         canvas.blit(PlayerImg, player_img_rect)
         
     while game_loop:
-        if score_amount % 10 == 0 and target_spawn_interval >= 1:
-            target_spawn_interval -= 1
-
-        if score_amount % 10 == 0 and target_spawn_interval == 1 and target_amount <= 5:
-            target_amount += 1
-
         # add time element to the game
         game_frame = game_frame + 1
         game_time = game_frame / GAME_SPEED
@@ -282,6 +276,11 @@ def game_loop():
             if target.colliderect(bullet):
                 targets_surface.remove(target)
                 score_amount+=1
+                if score_amount % 10 == 0 and target_spawn_interval >= 1:
+                    target_spawn_interval -= 1
+
+                if score_amount % 10 == 0 and target_spawn_interval == 1 and target_amount <= 5:
+                    target_amount += 1
 
         # Stop player if they hit the screen border
         if playerX <= 0:
