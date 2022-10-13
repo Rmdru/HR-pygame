@@ -32,15 +32,6 @@ pygame.display.set_icon(icon)
 # start pygame clock
 clock = pygame.time.Clock()
 
-# create score variable
-score_amount = 1
-
-# start pygame clock
-clock = pygame.time.Clock()
-
-# create score variable
-score_amount = 1
-
 # load highscore.json file
 high_score_file = open("highscore.json")
 high_score_json = json.load(high_score_file)
@@ -86,7 +77,7 @@ def start_screen():
     clock.tick(GAME_SPEED)
 
 # game over screen
-def game_over_screen():
+def game_over_screen(score_amount):
     # if new score > old score, write new score to JSON file
     high_score_old = high_score_json["highscore"]
     if score_amount > high_score_old:
@@ -128,6 +119,9 @@ def game_over_screen():
         clock.tick(GAME_SPEED)
 
 def game_loop():
+    # create score variable
+    score_amount = 1
+
     #var for game loop, if true, game runs
     game_loop = True
 
@@ -169,7 +163,7 @@ def game_loop():
     def target_hit_leftside(target_rect):
         if target_rect.left <= 0:
             game_loop = False
-            game_over_screen()
+            game_over_screen(score_amount)
 
     # Player
     PlayerImg = pygame.image.load("media\images\_rocket.png")
@@ -196,7 +190,7 @@ def game_loop():
     def player(x, y):
         player_img_rect.center = (x, y)
         canvas.blit(PlayerImg, player_img_rect)
-    score_amount=1
+        
     while game_loop:
         if score_amount % 10 == 0 and target_spawn_interval >= 1:
             target_spawn_interval -= 1
@@ -287,8 +281,7 @@ def game_loop():
             bullet = Rect((bulletX, bulletY),(BulletImg_X_size,BulletImg_Y_size))
             if target.colliderect(bullet):
                 targets_surface.remove(target)
-                if target.colliderect(bullet):
-                    score_amount+=1
+                score_amount+=1
 
         # Stop player if they hit the screen border
         if playerX <= 0:
@@ -320,7 +313,7 @@ def game_loop():
         for target in targets_surface:
             if pygame.Rect.colliderect(player_img_rect, target):
                 game_loop = False
-                game_over_screen()
+                game_over_screen(score_amount)
 
         # write score on corner of screen
         score_texts = create_font(f'Score:{score_amount}')
