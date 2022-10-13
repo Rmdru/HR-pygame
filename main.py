@@ -183,7 +183,7 @@ def game_loop():
     BulletImg_X_size = 32
     BulletImg_Y_size = 32
     bulletX = playerX
-    bulletY = playerY + (BulletImg_Y_size // 2)
+    bulletY = playerY
     bulletX_change = 15
     bullet_state = "ready"
 
@@ -218,7 +218,7 @@ def game_loop():
 
 
         def fire_bullet(x, y):
-            canvas.blit(BulletImg, (x + (BulletImg_X_size // 2 ), y + (BulletImg_Y_size // 2)))
+            canvas.blit(BulletImg, (x, y))
 
         # Check events
         for event in pygame.event.get():
@@ -245,7 +245,7 @@ def game_loop():
                     # To make sure the bullet starts at the front of the player
                     bulletX = playerX + 32
                     # Set bullet Y coordinate to current player Y coordinate
-                    bulletY = playerY
+                    bulletY = playerY - (BulletImg_Y_size // 2)
                     fire_bullet(bulletX, bulletY)
                     
                     # Change bullet state to "fire" if space is pressed
