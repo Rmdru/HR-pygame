@@ -1,5 +1,6 @@
 # Import libraries
 import random
+import json
 import pygame
 from pygame.locals import *
 
@@ -32,6 +33,16 @@ clock = pygame.time.Clock()
 
 # create score variable
 score_amount = 1
+
+# start pygame clock
+clock = pygame.time.Clock()
+
+# create score variable
+score_amount = 1
+
+# load highscore.json file
+high_score_file = open("highscore.json")
+high_score_json = json.load(high_score_file)
 
 # function to check if user has requested to quit game
 def quit_game_requested():
@@ -73,6 +84,15 @@ def start_screen():
 
 # game over screen
 def game_over_screen():
+    # if new score > old score, write new score to JSON file
+    high_score_old = high_score_json["highscore"]
+    if score_amount > high_score_old:
+        data = {
+            "highscore": score_amount
+        }
+        with open('highscore.json', 'w', encoding='utf-8') as f:
+            json.dump(data, f, ensure_ascii=False, indent=4)
+
     # font object..................................
     def create_font(t, s=72, c=(255, 255, 0), b=False, i=False):
         font = pygame.font.SysFont("Arial", s, bold=b, italic=i)
@@ -107,6 +127,96 @@ def game_over_screen():
 def game_loop():
     #var for game loop, if true, game runs
     game_loop = True
+
+    # background music
+    music = pygame.mixer.music.load("media\sounds\_music.mp3")
+    pygame.mixer.music.play(-1)
+
+    #create game frame variable
+    game_frame = 0
+
+    # create background
+    background = pygame.Surface(canvas.get_size())
+    background = background.convert()
+
+    # The number/amount of stars on the (background) screen
+    STARS_AMOUNT = 200
+
+    # create N stars randomly on the background
+    stars = [[random.randint(0, SCREEN_WIDTH), random.randint(0, SCREEN_HEIGHT)]
+            for x in range(STARS_AMOUNT)]
+
+    #generate target surfaces
+    targets_surface = []
+    targets_color = []
+
+    #function to spawn targets
+    def spawn_targets():
+        for i in range(TARGET_AMOUNT):
+            target_color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+            target_surface = pygame.Rect(random.randint(SCREEN_WIDTH, SCREEN_WIDTH + 50), random.randint(0, SCREEN_HEIGHT - TARGET_SIZE), TARGET_SIZE, TARGET_SIZE)
+            targets_surface.append(target_surface)
+            targets_color.append(target_color)
+
+    spawn_targets()
+
+    # function to trigger game over screen when target hit leftside of the window
+    def target_hit_leftside(target_rect):
+        if target_rect.left <= 0:
+            game_loop = False
+            game_over_screen()
+
+    # Player
+    PlayerImg = pygame.image.load("media\images\_rocket.png")
+    player_img_rect = PlayerImg.get_rect()
+    PlayerImg_X_size = 64
+    PlayerImg_Y_size = 64
+    playerX = SCREEN_WIDTH / 10
+    playerY = ( SCREEN_HEIGHT // 2 ) - ( PlayerImg_Y_size // 2 )
+    playerX_change = 0
+    playerY_change = 0
+    player_speed = 5
+
+    # Bullet
+    # Ready = Cant't see the bullet
+    # Fire = Bullet is moving on screen
+    BulletImg = pygame.image.load("media\images\_bullet.png")
+    BulletImg_X_size = 32
+    BulletImg_Y_size = 32
+    bulletX = playerX
+    bulletY = playerY + (BulletImg_Y_size // 2)
+    bulletX_change = 15
+    bullet_state = "ready"
+
+    def player(x, y):
+        player_img_rect.center = (x, y)
+        canvas.blit(PlayerImg, player_img_rect)
+
+    while game_loop:
+        #add time element to the game
+        game_frame = game_frame + 1
+        game_time = game_frame / GAME_SPEED
+
+        #spawn targets on TARGET_SPAWN_INTERVAL
+        if game_time % TARGET_SPAWN_INTERVAL == 0:
+            spawn_targets()
+
+        background.fill((0, 0, 0))
+        for star in stars:
+            pygame.draw.line(background, (255, 255, 255), (star[0], star[1]), (star[0], star[1]))
+            star[0] = star[0] - 1
+            if star[0] < 0:
+                star[0] = SCREEN_WIDTH
+                star[1] = random.randint(0, SCREEN_HEIGHT)
+
+        canvas.blit(background, (0, 0))
+
+        # loop through target surfaces to draw them on the canvas
+        for index, item in enumerate(targets_surface):
+            item.move_ip(TARGET_SPEED)
+            pygame.draw.rect(canvas, targets_color[index], item)
+            target_hit_leftside(item)
+
 
     # background music
     music = pygame.mixer.music.load("media\sounds\_music.mp3")
