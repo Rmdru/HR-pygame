@@ -283,18 +283,14 @@ def game_loop():
                     target_amount += 1
 
         # Stop player if they hit the screen border
-        if playerX <= 0:
-            playerX = 0
-        if playerX >= SCREEN_WIDTH - PlayerImg_X_size:
-            playerX = SCREEN_WIDTH - PlayerImg_X_size
-        if playerY <= 0:
-            playerY = 0
-        if playerY >= SCREEN_HEIGHT - PlayerImg_Y_size:
-            playerY = SCREEN_HEIGHT - PlayerImg_Y_size
-
-        # Prevent player from going too far right
+        if playerX <= 0 + (PlayerImg_X_size // 2):
+            playerX = 0 + (PlayerImg_X_size // 2)
         if playerX >= SCREEN_WIDTH * 0.60:
             playerX = SCREEN_WIDTH * 0.60
+        if playerY <= 0 + (PlayerImg_Y_size // 2):
+            playerY = 0 + (PlayerImg_Y_size // 2)
+        if playerY >= SCREEN_HEIGHT - (PlayerImg_Y_size // 2):
+            playerY = SCREEN_HEIGHT - (PlayerImg_Y_size // 2)
 
         # Bullet movement
         if bullet_state == "fire":
