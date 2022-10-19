@@ -37,6 +37,8 @@ high_score_file = open("highscore.json")
 high_score_json = json.load(high_score_file)
 
 # function to check if user has requested to quit game
+
+
 def quit_game_requested():
     halting = False
     for event in pygame.event.get():
@@ -46,15 +48,20 @@ def quit_game_requested():
     return halting
 
 # Determine functions and execute them
+
+
 def text_settings(text, lettertype_font):
     text_display = lettertype_font.render(text, True, WHITE)
     return text_display, text_display.get_rect()
 
 # made top left score text size color
+
+
 def create_font(t, s=32, c=(255, 255, 255), b=False, i=False):
     font = pygame.font.SysFont('Arial', s, bold=b, italic=i)
     text = font.render(t, True, c)
     return text
+
 
 # Create background
 background = pygame.Surface(canvas.get_size())
@@ -65,15 +72,16 @@ STARS_AMOUNT = 200
 
 # Create N stars randomly on the background
 stars = [[random.randint(0, SCREEN_WIDTH), random.randint(0, SCREEN_HEIGHT)]
-        for x in range(STARS_AMOUNT)]
+         for x in range(STARS_AMOUNT)]
+
 
 def star_background():
-    
+
     # Create the background
     background.fill((0, 0, 0))
     for star in stars:
         pygame.draw.line(background,
-                            (255, 255, 255), (star[0], star[1]), (star[0], star[1]))
+                         (255, 255, 255), (star[0], star[1]), (star[0], star[1]))
         star[0] = star[0] - 1
         if star[0] < 0:
             star[0] = SCREEN_WIDTH
@@ -87,21 +95,25 @@ def start_screen():
     star_background()
 
     text_in_capital_letters = pygame.font.Font('freesansbold.ttf', 95)
-    text_appearance_outsidelook, TextRect = text_settings("Space Shooter", text_in_capital_letters)
+    text_appearance_outsidelook, TextRect = text_settings(
+        "Space Shooter", text_in_capital_letters)
     TextRect.center = ((SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2))
     canvas.blit(text_appearance_outsidelook, TextRect)
 
     startbutton("Play", 290, 420, 200, 100, DARK_GREEN, LIGHT_GREEN, "play")
 
-    high_score_screen("High Score: " + str(high_score_json["highscore"]), 290, 325, 200, 100, DARK_GREEN, LIGHT_GREEN)
+    high_score_screen(
+        "High Score: " + str(high_score_json["highscore"]), 290, 325, 200, 100, DARK_GREEN, LIGHT_GREEN)
 
-    #update the display
+    # update the display
     pygame.display.flip()
 
-    #wait for next clock tick
+    # wait for next clock tick
     clock.tick(GAME_SPEED)
 
 # game over screen
+
+
 def game_over_screen(score_amount):
     # if new score > old score, write new score to JSON file
     high_score_old = high_score_json["highscore"]
@@ -120,13 +132,16 @@ def game_over_screen(score_amount):
 
     # Text to be rendered with create_font
     game_over_text = create_font("GAME OVER")
-    restart_text = create_font("Press Space to restart / Press Esc to quit", 36, (9, 0, 180))
-    
+    restart_text = create_font(
+        "Press Space to restart / Press Esc to quit", 36, (9, 0, 180))
+
     # loop to render game over screen
     while True:
         canvas.fill((0, 0, 0))
-        game_over_text_rect = game_over_text.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2))
-        restart_text_rect = restart_text.get_rect(center=(SCREEN_WIDTH / 2, (SCREEN_HEIGHT / 2 + 75)))
+        game_over_text_rect = game_over_text.get_rect(
+            center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2))
+        restart_text_rect = restart_text.get_rect(
+            center=(SCREEN_WIDTH / 2, (SCREEN_HEIGHT / 2 + 75)))
         canvas.blit(game_over_text, game_over_text_rect)
         canvas.blit(restart_text, restart_text_rect)
         for event in pygame.event.get():
@@ -143,34 +158,37 @@ def game_over_screen(score_amount):
         pygame.display.update()
         clock.tick(GAME_SPEED)
 
+
 def game_loop():
     # create score variable
     score_amount = 1
 
-    #var for game loop, if true, game runs
+    # var for game loop, if true, game runs
     game_loop = True
-    
+
     # background music
     music = pygame.mixer.music.load("media\sounds\_music.mp3")
     pygame.mixer.music.play(-1)
 
-    #create game frame variable
+    # create game frame variable
     game_frame = 0
 
-    #variable for game difficulty
+    # variable for game difficulty
     target_amount = 1
     target_spawn_interval = 3
 
-    #generate target surfaces
+    # generate target surfaces
     targets_surface = []
     targets_color = []
 
-    #function to spawn targets
+    # function to spawn targets
     def spawn_targets():
         for i in range(target_amount):
             random_pos = random.randint(50, 200)
-            target_color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
-            target_surface = pygame.Rect(random.randint(SCREEN_WIDTH, SCREEN_WIDTH + random_pos), random.randint(0, SCREEN_HEIGHT - TARGET_SIZE), TARGET_SIZE, TARGET_SIZE)
+            target_color = (random.randint(0, 255), random.randint(
+                0, 255), random.randint(0, 255))
+            target_surface = pygame.Rect(random.randint(SCREEN_WIDTH, SCREEN_WIDTH + random_pos),
+                                         random.randint(0, SCREEN_HEIGHT - TARGET_SIZE), TARGET_SIZE, TARGET_SIZE)
             targets_surface.append(target_surface)
             targets_color.append(target_color)
 
@@ -188,7 +206,7 @@ def game_loop():
     PlayerImg_X_size = 64
     PlayerImg_Y_size = 64
     playerX = SCREEN_WIDTH / 10
-    playerY = ( SCREEN_HEIGHT // 2 ) - ( PlayerImg_Y_size // 2 )
+    playerY = (SCREEN_HEIGHT // 2) - (PlayerImg_Y_size // 2)
     playerX_change = 0
     playerY_change = 0
     player_speed = 10
@@ -207,12 +225,12 @@ def game_loop():
     def player(x, y):
         player_img_rect.center = (x, y)
         canvas.blit(PlayerImg, player_img_rect)
-        
+
     while game_loop:
         # add time element to the game
         game_frame = game_frame + 1
         game_time = game_frame / GAME_SPEED
-            
+
         # Initialise the star background
         star_background()
 
@@ -225,7 +243,6 @@ def game_loop():
             item.move_ip(TARGET_SPEED)
             pygame.draw.rect(canvas, targets_color[index], item)
             target_hit_leftside(item)
-
 
         def fire_bullet(x, y):
             canvas.blit(BulletImg, (x, y))
@@ -249,15 +266,15 @@ def game_loop():
                 # If s key, Y increases
                 if event.key == pygame.K_s:
                     playerY_change = +player_speed
-                
-                ## Shooting
+
+                # Shooting
                 if event.key == pygame.K_SPACE and bullet_state == "ready":
                     # To make sure the bullet starts at the front of the player
                     bulletX = playerX + 32
                     # Set bullet Y coordinate to current player Y coordinate
                     bulletY = playerY - (BulletImg_Y_size // 2)
                     fire_bullet(bulletX, bulletY)
-                    
+
                     # Change bullet state to "fire" if space is pressed
                     while bullet_state == "ready":
                         bullet_state = "fire"
@@ -270,7 +287,7 @@ def game_loop():
                     playerX_change = 0
                 if event.key == pygame.K_w:
                     playerY_change = 0
-                if event.key == pygame.K_s :
+                if event.key == pygame.K_s:
                     playerY_change = 0
 
         playerX += playerX_change
@@ -279,13 +296,14 @@ def game_loop():
         # write score on corner of screen
         score_texts = create_font(f'Score:{score_amount}')
         canvas.blit(score_texts, (10, 10))
-        
+
         # making score count go up
         for target in targets_surface:
-            bullet = Rect((bulletX, bulletY),(BulletImg_X_size,BulletImg_Y_size))
+            bullet = Rect((bulletX, bulletY),
+                          (BulletImg_X_size, BulletImg_Y_size))
             if target.colliderect(bullet):
                 targets_surface.remove(target)
-                score_amount+=1
+                score_amount += 1
                 if score_amount % 10 == 0 and target_spawn_interval >= 1:
                     target_spawn_interval -= 1
 
@@ -327,6 +345,7 @@ def game_loop():
         pygame.display.update()
         clock.tick(GAME_SPEED)
 
+
 def startbutton(message, x, y, width, height, inactivecolour, activecolour, action=None):
     mouse = pygame.mouse.get_pos()
     mouse_click = pygame.mouse.get_pressed()
@@ -340,15 +359,19 @@ def startbutton(message, x, y, width, height, inactivecolour, activecolour, acti
         pygame.draw.rect(canvas, inactivecolour, (x, y, width, height))
 
     text_in_small_letters = pygame.font.Font("freesansbold.ttf", 40)
-    text_appearence_outsidelook, textRect = text_settings(message, text_in_small_letters)
+    text_appearence_outsidelook, textRect = text_settings(
+        message, text_in_small_letters)
     textRect.center = ((x + (width / 2)), (y + (height / 2)))
     canvas.blit(text_appearence_outsidelook, textRect)
 
+
 def high_score_screen(message, x, y, width, height, inactivecolour, activecolour, action=None):
     text_in_small_letters = pygame.font.Font("freesansbold.ttf", 40)
-    text_appearence_outsidelook, textRect = text_settings(message, text_in_small_letters)
+    text_appearence_outsidelook, textRect = text_settings(
+        message, text_in_small_letters)
     textRect.center = ((x + (width / 2)), (y + (height / 2)))
     canvas.blit(text_appearence_outsidelook, textRect)
+
 
 while not quit_game_requested():
     start_screen()
